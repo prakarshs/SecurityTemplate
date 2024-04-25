@@ -1,5 +1,6 @@
 package com.prakarshs.SecurityTemplate.Entity;
 
+import com.prakarshs.SecurityTemplate.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
