@@ -10,7 +10,7 @@ public class SecurityTemplateApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SecurityTemplateApplication.class, args);
-		log.info("*** SECURITY TEMPLATE STARTED ***");
+		log.info("*** SECURITY TEMPLATE  STARTED ***");
 	}
 
 }
