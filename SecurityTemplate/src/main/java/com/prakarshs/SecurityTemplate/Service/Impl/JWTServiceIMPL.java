@@ -35,7 +35,9 @@ public class JWTServiceIMPL implements JWTService {
         return claimsResolvers.apply(claims);
     }
 
-
+    public String extractUserName(String token){
+        return extractClaim(token, Claims::getSubject);
+    }
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser().build().parseSignedClaims(token).getPayload();
