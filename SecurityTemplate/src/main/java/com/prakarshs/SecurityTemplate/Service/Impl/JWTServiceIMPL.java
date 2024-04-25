@@ -1,6 +1,7 @@
 package com.prakarshs.SecurityTemplate.Service.Impl;
 
 import com.prakarshs.SecurityTemplate.Service.JWTService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -12,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.function.Function;
 
 @Service
 public class JWTServiceIMPL implements JWTService {
@@ -27,8 +29,20 @@ public class JWTServiceIMPL implements JWTService {
                 .compact();
     }
 
+    @Override
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolvers.apply(claims);
+    }
+
+
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().build().parseSignedClaims(token).getPayload();
+    }
+
     private Key getSignKey() {
-        byte[] key = Decoders.BASE64.decode(Base64.getEncoder().encodeToString("**@@your-private-key-here@@**".getBytes()));
-        return Keys.hmacShaKeyFor(key);
+        byte[] key = "**@@your-private-key-here@@**".getBytes(); // instead you can have base64 byte[] of your string aswell
+        return Keys.hmacShaKeyFor(key); 
     }
 }
