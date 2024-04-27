@@ -3,15 +3,11 @@ package com.prakarshs.SecurityTemplate.Service.Impl;
 import com.prakarshs.SecurityTemplate.Service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -36,6 +32,12 @@ public class JWTServiceIMPL implements JWTService {
     @Override
     public String extractUserName(String token){
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public Boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = extractUserName(token);
+        return username.equals(userDetails.getUsername());
     }
 
     private Claims extractAllClaims(String token) {
