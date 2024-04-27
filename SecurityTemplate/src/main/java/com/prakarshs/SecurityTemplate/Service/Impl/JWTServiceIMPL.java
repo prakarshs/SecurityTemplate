@@ -29,12 +29,11 @@ public class JWTServiceIMPL implements JWTService {
                 .compact();
     }
 
-    @Override
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
-
+    @Override
     public String extractUserName(String token){
         return extractClaim(token, Claims::getSubject);
     }
