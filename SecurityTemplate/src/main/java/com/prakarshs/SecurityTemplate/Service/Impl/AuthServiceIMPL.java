@@ -57,9 +57,12 @@ public class AuthServiceIMPL implements AuthService {
 
     @Override
     public JWTAuthResponse signIn(SignInRequest signInRequest) {
+        try{
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));}
+        catch (Exception exception){
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
-        log.info("here in sign in");
+        }
+
 
         var user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new ValueDoesntExist("The Entered Email Doesn't Exist","Try Signing Up With The Email First."));
 
