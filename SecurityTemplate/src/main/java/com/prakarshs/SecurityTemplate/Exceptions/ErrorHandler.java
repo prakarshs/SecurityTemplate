@@ -14,4 +14,12 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .resolution(exception.getResolution())
                 .build(), HttpStatus.CONFLICT);
     }
+    @ExceptionHandler
+    public ResponseEntity<ErrorBody> invalidHandler(ValueDoesntExist exception){
+        return new ResponseEntity<>(ErrorBody.builder()
+                .message(exception.getMessage())
+                .resolution(exception.getResolution())
+                .build(), HttpStatus.NOT_FOUND);
+    }
+
 }
