@@ -25,8 +25,8 @@ public class UserEntity implements UserDetails {
     private Integer userId;
     @Column(name = "Fname")
     private String firstName;
-    @Column(name = "Sname")
-    private String secondName;
+    @Column(name = "Lname")
+    private String lastName;
     @Column(name = "Email")
     private String email;
     @Column(name = "Password")

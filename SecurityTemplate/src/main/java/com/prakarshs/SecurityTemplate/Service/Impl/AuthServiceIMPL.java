@@ -18,6 +18,9 @@ public class AuthServiceIMPL implements AuthService {
     private PasswordEncoder passwordEncoder;
 
     public UserEntity signup(SignUpRequest signUpRequest){
-        UserEntity user = UserEntity.builder().build();
+        UserEntity user = UserEntity.builder()
+                .firstName(signUpRequest.getFirstName())
+                .lastName(signUpRequest.getLastName())
+                .build();
     }
 }
