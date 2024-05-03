@@ -1,5 +1,7 @@
 package com.prakarshs.SecurityTemplate.Service.Impl;
 
+import com.prakarshs.SecurityTemplate.DTO.JWTAuthResponse;
+import com.prakarshs.SecurityTemplate.DTO.SignInRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
 import com.prakarshs.SecurityTemplate.Enums.Role;
@@ -17,8 +19,9 @@ public class AuthServiceIMPL implements AuthService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
-    public UserEntity signup(SignUpRequest signUpRequest){
+    public UserEntity signup(SignUpRequest signUpRequest) {
         UserEntity user = UserEntity.builder()
                 .firstName(signUpRequest.getFirstName())
                 .lastName(signUpRequest.getLastName())
@@ -30,4 +33,12 @@ public class AuthServiceIMPL implements AuthService {
         userRepository.save(user);
         return user;
     }
+
+    @Override
+    public JWTAuthResponse signIn(SignInRequest signInRequest) {
+
+
+        return null;
+    }
+
 }
