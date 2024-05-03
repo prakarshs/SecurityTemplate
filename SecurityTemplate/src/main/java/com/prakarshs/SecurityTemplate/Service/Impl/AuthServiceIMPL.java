@@ -76,7 +76,6 @@ public class AuthServiceIMPL implements AuthService {
             jwtAuthResponse.setRefreshToken(refreshRequest.getToken());
 
             return jwtAuthResponse;
-
         }
         return null;
     }

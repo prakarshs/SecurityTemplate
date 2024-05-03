@@ -1,6 +1,7 @@
 package com.prakarshs.SecurityTemplate.Controller;
 
 import com.prakarshs.SecurityTemplate.DTO.JWTAuthResponse;
+import com.prakarshs.SecurityTemplate.DTO.RefreshTokenRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignInRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
@@ -30,6 +31,13 @@ public class AuthController {
     public ResponseEntity<JWTAuthResponse> signin(@RequestBody SignInRequest signInRequest){
         return ResponseEntity.ok(authService.signIn(signInRequest));
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<JWTAuthResponse> refresh(@RequestBody RefreshTokenRequest refreshRequest){
+        return ResponseEntity.ok(authService.refresh(refreshRequest));
+    }
+
+
 
 
 }
