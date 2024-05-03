@@ -7,6 +7,7 @@ import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
 import com.prakarshs.SecurityTemplate.Enums.Role;
 import com.prakarshs.SecurityTemplate.Exceptions.DuplicateValueException;
+import com.prakarshs.SecurityTemplate.Exceptions.ValueDoesntExist;
 import com.prakarshs.SecurityTemplate.Repository.UserRepository;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
 import com.prakarshs.SecurityTemplate.Service.JWTService;
@@ -59,7 +60,7 @@ public class AuthServiceIMPL implements AuthService {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
 
-        var user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid Email Or Password."));
+        var user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new ValueDoesntExist("The Entered Email Doesn't Exist","Try Signing Up With The Email First."));
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
@@ -75,7 +76,7 @@ public class AuthServiceIMPL implements AuthService {
     @Override
     public JWTAuthResponse refresh(RefreshTokenRequest refreshRequest) {
         String userEmail = jwtService.extractUserName(refreshRequest.getToken());
-        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        var user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ValueDoesntExist("The Entered Email Doesn't Exist","Try Signing Up With The Email First."));
         if(jwtService.isTokenValid(refreshRequest.getToken(),user)){
             var jwt = jwtService.generateToken(user);
 
