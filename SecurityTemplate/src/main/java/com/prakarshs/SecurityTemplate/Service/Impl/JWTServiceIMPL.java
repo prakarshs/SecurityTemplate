@@ -58,7 +58,7 @@ public class JWTServiceIMPL implements JWTService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().build().parseSignedClaims(token).getPayload();
+        return Jwts.parser().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
     }
 
     private Key getSignKey() {
