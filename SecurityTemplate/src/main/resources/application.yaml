@@ -5,7 +5,7 @@ spring:
   application:
     name: SecurityTemplate
   datasource:
-    url: jdbc:mysql://localhost:3306/security-db
+    url: jdbc:mysql://localhost:3306/secudb
     username: root
     password: root
     driver-class-name:
