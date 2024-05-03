@@ -10,7 +10,9 @@ import com.prakarshs.SecurityTemplate.Repository.UserRepository;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
 import com.prakarshs.SecurityTemplate.Service.JWTService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +23,7 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AuthServiceIMPL implements AuthService {
     @Autowired
     private UserRepository userRepository;
@@ -40,8 +43,13 @@ public class AuthServiceIMPL implements AuthService {
                 .role(Role.USER)
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .build();
+        try{
+            userRepository.save(user);
+        }catch (Exception e){
+            log.error("Duplicate Email ID. Try With A Different Email ID.");
+            throw new DuplicateKeyException("The Entered Email Already Exists !");
+        }
 
-        userRepository.save(user);
         return user;
     }
 
