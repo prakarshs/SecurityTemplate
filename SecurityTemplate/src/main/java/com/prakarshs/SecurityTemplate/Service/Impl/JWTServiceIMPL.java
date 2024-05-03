@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,7 +33,7 @@ public class JWTServiceIMPL implements JWTService {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 604800000))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                .signWith(getSignKey())
                 .compact();
     }
 
@@ -58,10 +58,10 @@ public class JWTServiceIMPL implements JWTService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload();
     }
 
-    private Key getSignKey() {
+    private SecretKey getSignKey() {
         byte[] key = "***!!***@@your-private-key-here@@***!!***".getBytes(); // instead you can have base64 byte[] of your string aswell
         return Keys.hmacShaKeyFor(key); 
     }
