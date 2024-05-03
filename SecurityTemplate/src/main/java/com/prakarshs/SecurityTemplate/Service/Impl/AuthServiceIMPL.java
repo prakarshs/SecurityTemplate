@@ -17,7 +17,7 @@ public class AuthServiceIMPL implements AuthService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Override
     public UserEntity signup(SignUpRequest signUpRequest){
         UserEntity user = UserEntity.builder()
                 .firstName(signUpRequest.getFirstName())
