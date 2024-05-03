@@ -1,5 +1,6 @@
 package com.prakarshs.SecurityTemplate.Service.Impl;
 
+import com.prakarshs.SecurityTemplate.Exceptions.ValueDoesntExist;
 import com.prakarshs.SecurityTemplate.Repository.UserRepository;
 import com.prakarshs.SecurityTemplate.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class UserServiceIMPL implements UserService {
     public UserDetailsService userDetailService() {
         return new UserDetailsService() {
             @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("Username Isnt Valid"));
+            public UserDetails loadUserByUsername(String username) throws ValueDoesntExist {
+                return userRepository.findByEmail(username).orElseThrow(()-> new ValueDoesntExist("The Entered Email Doesn't Exist","Try Signing Up With The Email First."));
             }
         };
     }
