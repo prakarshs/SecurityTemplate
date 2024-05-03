@@ -5,6 +5,7 @@ import com.prakarshs.SecurityTemplate.DTO.RefreshTokenRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignInRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
+import com.prakarshs.SecurityTemplate.Exceptions.FailedAuthentication;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JWTAuthResponse> signin(@RequestBody SignInRequest signInRequest){
+    public ResponseEntity<JWTAuthResponse> signin(@RequestBody SignInRequest signInRequest) throws FailedAuthentication {
         return ResponseEntity.ok(authService.signIn(signInRequest));
     }
 

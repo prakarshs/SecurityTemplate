@@ -7,6 +7,7 @@ import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
 import com.prakarshs.SecurityTemplate.Enums.Role;
 import com.prakarshs.SecurityTemplate.Exceptions.DuplicateValueException;
+import com.prakarshs.SecurityTemplate.Exceptions.FailedAuthentication;
 import com.prakarshs.SecurityTemplate.Exceptions.ValueDoesntExist;
 import com.prakarshs.SecurityTemplate.Repository.UserRepository;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
@@ -56,11 +57,11 @@ public class AuthServiceIMPL implements AuthService {
     }
 
     @Override
-    public JWTAuthResponse signIn(SignInRequest signInRequest) {
+    public JWTAuthResponse signIn(SignInRequest signInRequest) throws FailedAuthentication {
         try{
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));}
         catch (Exception exception){
-
+            throw new FailedAuthentication("The Username and(or) Password Is Incorrect.","Try With A Different Combination.");
         }
 
 
