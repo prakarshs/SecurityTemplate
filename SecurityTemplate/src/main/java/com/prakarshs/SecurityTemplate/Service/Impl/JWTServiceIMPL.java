@@ -3,6 +3,7 @@ package com.prakarshs.SecurityTemplate.Service.Impl;
 import com.prakarshs.SecurityTemplate.Service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class JWTServiceIMPL implements JWTService {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 604800000))
-                .signWith(getSignKey())
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -61,7 +62,7 @@ public class JWTServiceIMPL implements JWTService {
     }
 
     private Key getSignKey() {
-        byte[] key = "**@@your-private-key-here@@**".getBytes(); // instead you can have base64 byte[] of your string aswell
+        byte[] key = "***!!***@@your-private-key-here@@***!!***".getBytes(); // instead you can have base64 byte[] of your string aswell
         return Keys.hmacShaKeyFor(key); 
     }
 }

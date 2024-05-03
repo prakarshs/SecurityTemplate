@@ -1,5 +1,7 @@
 package com.prakarshs.SecurityTemplate.Controller;
 
+import com.prakarshs.SecurityTemplate.DTO.JWTAuthResponse;
+import com.prakarshs.SecurityTemplate.DTO.SignInRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
@@ -22,6 +24,11 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<UserEntity> signup(@RequestBody SignUpRequest signUpRequest){
         return ResponseEntity.ok(authService.signup(signUpRequest));
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<JWTAuthResponse> signin(@RequestBody SignInRequest signInRequest){
+        return ResponseEntity.ok(authService.signIn(signInRequest));
     }
 
 
