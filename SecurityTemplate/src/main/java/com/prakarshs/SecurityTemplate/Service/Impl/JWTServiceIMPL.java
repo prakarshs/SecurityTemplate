@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -21,6 +22,16 @@ public class JWTServiceIMPL implements JWTService {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 *24))
+                .signWith(getSignKey())
+                .compact();
+    }
+    @Override
+    public String generateRefreshToken(Map<String, Object> extractClaims, UserDetails userDetails) {
+        return Jwts.builder()
+                .claims(extractClaims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 604800000))
                 .signWith(getSignKey())
                 .compact();
     }

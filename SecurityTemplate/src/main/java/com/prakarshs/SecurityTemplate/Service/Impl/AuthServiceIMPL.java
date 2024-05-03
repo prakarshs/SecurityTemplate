@@ -51,6 +51,11 @@ public class AuthServiceIMPL implements AuthService {
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+
+        jwtAuthResponse.setToken(jwt);
+        jwtAuthResponse.setRefreshToken(refreshToken);
     }
 
 }
