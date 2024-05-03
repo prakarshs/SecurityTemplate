@@ -13,7 +13,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hey There !");
+        return ResponseEntity.ok("Hey There User!");
     }
 
 }
