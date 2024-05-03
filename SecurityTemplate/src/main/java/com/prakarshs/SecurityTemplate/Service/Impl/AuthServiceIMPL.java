@@ -28,5 +28,6 @@ public class AuthServiceIMPL implements AuthService {
                 .build();
 
         userRepository.save(user);
+        return user;
     }
 }
