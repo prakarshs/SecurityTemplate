@@ -1,6 +1,7 @@
 package com.prakarshs.SecurityTemplate.Service.Impl;
 
 import com.prakarshs.SecurityTemplate.DTO.JWTAuthResponse;
+import com.prakarshs.SecurityTemplate.DTO.RefreshTokenRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignInRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ public class AuthServiceIMPL implements AuthService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JWTService jwtService;
+
     @Override
     public UserEntity signup(SignUpRequest signUpRequest) {
         UserEntity user = UserEntity.builder()
@@ -45,9 +48,9 @@ public class AuthServiceIMPL implements AuthService {
     @Override
     public JWTAuthResponse signIn(SignInRequest signInRequest) {
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),signInRequest.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
 
-        var user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(()-> new IllegalArgumentException("Invalid Email Or Password."));
+        var user = userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid Email Or Password."));
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
@@ -58,6 +61,24 @@ public class AuthServiceIMPL implements AuthService {
         jwtAuthResponse.setRefreshToken(refreshToken);
 
         return jwtAuthResponse;
+    }
+
+    @Override
+    public JWTAuthResponse refresh(RefreshTokenRequest refreshRequest) {
+        String userEmail = jwtService.extractUserName(refreshRequest.getToken());
+        var user = userRepository.findByEmail(userEmail).orElseThrow();
+        if(jwtService.isTokenValid(refreshRequest.getToken(),user)){
+            var jwt = jwtService.generateToken(user);
+
+            JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+
+            jwtAuthResponse.setToken(jwt);
+            jwtAuthResponse.setRefreshToken(refreshRequest.getToken());
+
+            return jwtAuthResponse;
+
+        }
+        return null;
     }
 
 }
