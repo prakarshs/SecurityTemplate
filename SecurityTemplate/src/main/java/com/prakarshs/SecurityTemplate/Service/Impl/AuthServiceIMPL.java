@@ -1,5 +1,7 @@
 package com.prakarshs.SecurityTemplate.Service.Impl;
 
+import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
+import com.prakarshs.SecurityTemplate.Entity.UserEntity;
 import com.prakarshs.SecurityTemplate.Repository.UserRepository;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -14,4 +16,8 @@ public class AuthServiceIMPL implements AuthService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserEntity signup(SignUpRequest signUpRequest){
+        UserEntity user = UserEntity.builder().build();
+    }
 }
