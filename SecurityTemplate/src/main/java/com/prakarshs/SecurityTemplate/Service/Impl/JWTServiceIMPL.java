@@ -3,8 +3,8 @@ package com.prakarshs.SecurityTemplate.Service.Impl;
 import com.prakarshs.SecurityTemplate.Service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@Log4j2
 public class JWTServiceIMPL implements JWTService {
 
 
@@ -49,7 +50,14 @@ public class JWTServiceIMPL implements JWTService {
     @Override
     public Boolean isTokenValid(String token, UserDetails userDetails) {
         String username = extractUserName(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        if(username.equals(userDetails.getUsername()) && !isTokenExpired(token)){
+            log.info("Token Is Valid!");
+            return true;
+        }
+        else {
+            log.error("Token Is Invalid");
+            return false;
+        }
     }
 
     private boolean isTokenExpired(String token) {
