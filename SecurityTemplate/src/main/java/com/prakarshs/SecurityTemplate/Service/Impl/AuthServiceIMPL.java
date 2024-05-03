@@ -6,6 +6,7 @@ import com.prakarshs.SecurityTemplate.DTO.SignInRequest;
 import com.prakarshs.SecurityTemplate.DTO.SignUpRequest;
 import com.prakarshs.SecurityTemplate.Entity.UserEntity;
 import com.prakarshs.SecurityTemplate.Enums.Role;
+import com.prakarshs.SecurityTemplate.Exceptions.DuplicateValueException;
 import com.prakarshs.SecurityTemplate.Repository.UserRepository;
 import com.prakarshs.SecurityTemplate.Service.AuthService;
 import com.prakarshs.SecurityTemplate.Service.JWTService;
@@ -47,7 +48,7 @@ public class AuthServiceIMPL implements AuthService {
             userRepository.save(user);
         }catch (Exception e){
             log.error("Duplicate Email ID. Try With A Different Email ID.");
-            throw new DuplicateKeyException("The Entered Email Already Exists !");
+            throw new DuplicateValueException("The EmailID Already Exists.","Try With A Different EmailID Instead.");
         }
 
         return user;
