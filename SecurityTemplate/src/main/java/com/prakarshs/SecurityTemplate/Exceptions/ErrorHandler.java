@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.security.auth.login.FailedLoginException;
+
 @ControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
@@ -21,5 +24,13 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .resolution(exception.getResolution())
                 .build(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler
+    public ResponseEntity<ErrorBody> failedAuth(FailedAuthentication exception){
+        return new ResponseEntity<>(ErrorBody.builder()
+                .message(exception.getMessage())
+                .resolution(exception.getResolution())
+                .build(), HttpStatus.NOT_FOUND);
+    }
+
 
 }
